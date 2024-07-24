@@ -3,6 +3,8 @@ mod tests {
     use std::i32;
     use std::str;
 
+    use yerevan::yerevanize;
+
     // Some simple user-defined structs for compuation expressions
     struct SimpleBinder {}
     impl SimpleBinder {

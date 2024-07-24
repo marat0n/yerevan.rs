@@ -1,6 +1,8 @@
 /// `yerevan.rs` macros for fancy-shmancy syntax for computation expressions using
 /// Example:
 /// ```rust
+/// use yerevan::yerevanize;
+///
 /// // Some simple user-defined structs for compuation expressions
 /// struct SimpleBinder {}
 /// impl SimpleBinder {
@@ -28,11 +30,11 @@
 ///     }
 /// }
 ///
-/// pub fn showcase(wrapped1: Option<i32>, wrapper2: Option<&str>) -> bool {
+/// pub fn showcase(wrapped1: Option<i32>, wrapped2: Option<&str>) -> bool {
 ///     let from_macro = yerevanize!(
 ///         SimpleBinder =>
 ///         let! unwrapped1 = wrapped1;
-///         let! unwrapped2 = wrapper2;
+///         let! unwrapped2 = wrapped2;
 ///         let one = 1;
 ///         Incrementer =>
 ///         let! res = one + unwrapped1 + (unwrapped2.len() as i32);
@@ -51,7 +53,7 @@
 ///         })
 ///         )
 ///         })
-///         })
+///         });
 ///     from_macro == by_hand // true
 /// }
 /// ```
