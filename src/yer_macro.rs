@@ -28,8 +28,8 @@
 ///     }
 /// }
 ///
-/// pub fn showcase(wrapped1: Option<i32>, wrapper2: Option<&str>) -> Option<i32> {
-///     yerevanize!(
+/// pub fn showcase(wrapped1: Option<i32>, wrapper2: Option<&str>) -> bool {
+///     let from_macro = yerevanize!(
 ///         SimpleBinder =>
 ///         let! unwrapped1 = wrapped1;
 ///         let! unwrapped2 = wrapper2;
@@ -37,7 +37,22 @@
 ///         Incrementer =>
 ///         let! res = one + unwrapped1 + (unwrapped2.len() as i32);
 ///         ret res
-///     )
+///     );
+///     let by_hand =
+///         SimpleBinder::bind(
+///         wrapped1, &|unwrapped1| {
+///         SimpleBinder::bind(
+///         wrapped2, &|unwrapped2| {
+///         let one = 1;
+///         SimpleBinder::ret(
+///         Incrementer::bind(
+///         one + unwrapped1 + (unwrapped2.len() as i32), &|res| {
+///         Incrementer::ret(res)
+///         })
+///         )
+///         })
+///         })
+///     from_macro == by_hand // true
 /// }
 /// ```
 #[allow(unused_macros)]
