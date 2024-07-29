@@ -57,10 +57,11 @@
 ///     from_macro == by_hand // true
 /// }
 /// ```
+
 #[allow(unused_macros)]
 #[macro_export]
 macro_rules! yerevanize {
-    // value-binding
+    // let!
     (
         $struct_name:ident =>
         let! $var_name:ident = $expression:expr;
@@ -70,6 +71,8 @@ macro_rules! yerevanize {
             yerevanize!($struct_name => $($tail)*)
         })
     };
+
+    // do!
     (
         $struct_name:ident =>
         do! $expression:expr;
@@ -79,7 +82,8 @@ macro_rules! yerevanize {
             yerevanize!($struct_name => $($tail)*)
         })
     };
-    // letting to just execute basic expressions
+
+    // let
     (
         $struct_name:ident =>
         let $var_name:ident = $expression:expr;
@@ -90,6 +94,8 @@ macro_rules! yerevanize {
             (yerevanize!($struct_name => $($tail)*))
         }
     };
+
+    // do
     (
         $struct_name:ident =>
         do $expression:expr;
@@ -121,6 +127,7 @@ macro_rules! yerevanize {
     ( $previoues_struct_name:ident => $struct_name:ident! => $($tail:tt)* ) => {
         $previoues_struct_name::ret_from(yerevanize!($struct_name => $($tail)*))
     };
+
     // exit-point
     ( $struct_name:ident => ) => { }
 }
