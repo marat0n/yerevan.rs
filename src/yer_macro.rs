@@ -104,22 +104,48 @@ macro_rules! yerevanize {
         $expression;
         yerevanize!($struct_name => $($tail)*)
     };
+
+    // delay
     (
         $struct_name:ident =>
         delay $expression:expr;
         $($tail:tt)*
     ) => {
-        $struct_name::lazy($expression, &|delayed| {
+        $struct_name::delay($expression, &|delayed| {
             yerevanize!($struct_name => $($tail)*)
         })
     };
-    // return-point
+
+    // ret
     ( $struct_name:ident => ret $expression:expr ) => {
         $struct_name::ret($expression)
     };
+
+    // ret!
     ( $struct_name:ident => ret! $expression:expr ) => {
         $struct_name::ret_from($expression)
     };
+
+    // yield as return (last yield)
+    (
+        $struct_name:ident =>
+        yield $expression:expr;
+    ) => {
+        $struct_name::ret_yield($expression)
+    };
+
+    // yield with combiner
+    (
+        $struct_name:ident =>
+        yield $expression:expr;
+        $($tail:tt)*
+    ) => {
+        $struct_name::combine(
+            $struct_name::ret_yield($expression),
+            yerevanize!($struct_name => $($tail)*)
+        )
+    };
+
     // changing the CE-functions provider type
     ( $previoues_struct_name:ident => $struct_name:ident => $($tail:tt)* ) => {
         $previoues_struct_name::ret(yerevanize!($struct_name => $($tail)*))
