@@ -147,11 +147,11 @@ macro_rules! yerevanize {
     };
 
     // changing the CE-functions provider type
-    ( $previoues_struct_name:ident => $struct_name:ident => $($tail:tt)* ) => {
-        $previoues_struct_name::ret(yerevanize!($struct_name => $($tail)*))
+    ( $previous_struct_name:ident => $struct_name:ident => $($tail:tt)* ) => {
+        $previous_struct_name::ret(yerevanize!($struct_name => $($tail)*))
     };
-    ( $previoues_struct_name:ident => $struct_name:ident! => $($tail:tt)* ) => {
-        $previoues_struct_name::ret_from(yerevanize!($struct_name => $($tail)*))
+    ( $previous_struct_name:ident => $struct_name:ident! => $($tail:tt)* ) => {
+        $previous_struct_name::ret_from(yerevanize!($struct_name => $($tail)*))
     };
 
     // exit-point
