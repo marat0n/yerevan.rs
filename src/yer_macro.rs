@@ -1,7 +1,7 @@
 /// `yerevan.rs` macros for fancy-shmancy syntax for computation expressions using
 /// Example:
 /// ```rust
-/// use yerevan::yerevanize;
+/// use yerevan::yer;
 ///
 /// // Some simple user-defined structs for compuation expressions
 /// struct SimpleBinder {}
@@ -31,7 +31,7 @@
 /// }
 ///
 /// pub fn showcase(wrapped1: Option<i32>, wrapped2: Option<&str>) -> bool {
-///     let from_macro = yerevanize!(
+///     let from_macro = yer!(
 ///         SimpleBinder =>
 ///         let! unwrapped1 = wrapped1;
 ///         let! unwrapped2 = wrapped2;
@@ -60,7 +60,7 @@
 
 #[allow(unused_macros)]
 #[macro_export]
-macro_rules! yerevanize {
+macro_rules! yer {
     // let!
     (
         $struct_name:ident =>
@@ -68,7 +68,7 @@ macro_rules! yerevanize {
         $($tail:tt)*
     ) => {
         $struct_name::bind($expression, &|$var_name| {
-            yerevanize!($struct_name => $($tail)*)
+            yer!($struct_name => $($tail)*)
         })
     };
 
@@ -79,7 +79,7 @@ macro_rules! yerevanize {
         $($tail:tt)*
     ) => {
         $struct_name::bind($expression, &|_| {
-            yerevanize!($struct_name => $($tail)*)
+            yer!($struct_name => $($tail)*)
         })
     };
 
@@ -91,7 +91,7 @@ macro_rules! yerevanize {
     ) => {
         {
             let $var_name = $expression;
-            (yerevanize!($struct_name => $($tail)*))
+            (yer!($struct_name => $($tail)*))
         }
     };
 
@@ -102,7 +102,7 @@ macro_rules! yerevanize {
         $($tail:tt)*
     ) => {
         $expression;
-        yerevanize!($struct_name => $($tail)*)
+        yer!($struct_name => $($tail)*)
     };
 
     // delay
@@ -112,7 +112,7 @@ macro_rules! yerevanize {
         $($tail:tt)*
     ) => {
         $struct_name::delay($expression, &|delayed| {
-            yerevanize!($struct_name => $($tail)*)
+            yer!($struct_name => $($tail)*)
         })
     };
 
@@ -142,16 +142,16 @@ macro_rules! yerevanize {
     ) => {
         $struct_name::combine(
             $struct_name::ret_yield($expression),
-            yerevanize!($struct_name => $($tail)*)
+            yer!($struct_name => $($tail)*)
         )
     };
 
     // changing the CE-functions provider type
     ( $previous_struct_name:ident => $struct_name:ident => $($tail:tt)* ) => {
-        $previous_struct_name::ret(yerevanize!($struct_name => $($tail)*))
+        $previous_struct_name::ret(yer!($struct_name => $($tail)*))
     };
     ( $previous_struct_name:ident => $struct_name:ident! => $($tail:tt)* ) => {
-        $previous_struct_name::ret_from(yerevanize!($struct_name => $($tail)*))
+        $previous_struct_name::ret_from(yer!($struct_name => $($tail)*))
     };
 
     // exit-point

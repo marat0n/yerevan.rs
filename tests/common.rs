@@ -3,7 +3,7 @@ mod tests {
     use std::i32;
     use std::str;
 
-    use yerevan::yerevanize;
+    use yerevan::yer;
 
     // Some simple user-defined structs for compuation expressions
     struct SimpleBinder {}
@@ -15,6 +15,9 @@ mod tests {
             }
         }
         pub fn ret<T>(val: T) -> Option<T> {
+            Some(val)
+        }
+        pub fn lazy<T>(val: T) -> Option<T> {
             Some(val)
         }
         pub fn zero<T>() -> Option<T> {
@@ -33,7 +36,7 @@ mod tests {
     }
 
     pub fn showcase(wrapped1: Option<i32>, wrapper2: Option<&str>, for_do: Option<()>) -> Option<i32> {
-        yerevanize!(
+        yer!(
             SimpleBinder =>
             let! v = wrapped1;
             let a = 1;

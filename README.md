@@ -37,7 +37,7 @@ for rust, inspired by F#'s CEs but with syntax-design changes and improvements.
 Firstly define the struct which is implementing all neccessary functions for <span>yerevan.rs</span>\'s computation expressions.
 Do it like this:
 ```rust
-yerevanize! {
+yer! {
     MyOption =>
     let! ...
     let ...
@@ -45,7 +45,7 @@ yerevanize! {
 }
 ```
 
-|yerevanize! expression|description|
+|yer! expression|description|
 | --- | ---|
 | `$some_your_struct` => | Defining the struct as the provider of computation expression functions. |
 |`let!` $your_var = $your_expression|Using the last defined struct in macros as the provider of `bind` function and call the `$that_struct::bind($your_expression, &\|$your_var\| { next code })`. |
