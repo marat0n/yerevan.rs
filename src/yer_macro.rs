@@ -106,15 +106,15 @@ macro_rules! yer {
     };
 
     // delay
-    (
-        $struct_name:ident =>
-        delay $expression:expr;
-        $($tail:tt)*
-    ) => {
-        $struct_name::delay($expression, &|delayed| {
-            yer!($struct_name => $($tail)*)
-        })
-    };
+    // (
+    //     $struct_name:ident =>
+    //     delay $expression:expr;
+    //     $($tail:tt)*
+    // ) => {
+    //     $struct_name::delay($expression, &|delayed| {
+    //         yer!($struct_name => $($tail)*)
+    //     })
+    // };
 
     // ret
     ( $struct_name:ident => ret $expression:expr ) => {
@@ -141,8 +141,8 @@ macro_rules! yer {
         $($tail:tt)*
     ) => {
         $struct_name::combine(
-            $struct_name::ret_yield($expression),
-            yer!($struct_name => $($tail)*)
+            yer!($struct_name => $($tail)*),
+            $struct_name::ret_yield($expression)
         )
     };
 
