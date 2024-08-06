@@ -1,4 +1,7 @@
-/// `yerevan.rs` macros for fancy-shmancy syntax for computation expressions using
+//! Module containing the [`crate::yer`] macro.
+
+/// `yerevan.rs` macros for fancy-shmancy syntax for computation expressions.
+///
 /// Example:
 /// ```rust
 /// use yerevan::yer;
