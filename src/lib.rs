@@ -27,7 +27,7 @@
 //! The [yer!] macros is very flexible, so you must only to use your types in a right way knowing
 //! how CEs are working inside.
 //!
-//! Also try to check examples in [yer!]-page and tests in tests/common.rs file in repo to better understand how CEs are working inside.
+//! Also try to check examples in [yer!]-page and tests in [tests/common.rs file in repo](https://github.com/marat0n/yerevan.rs/blob/dev/tests/common.rs) to better understand how CEs are working inside.
 //! ### Methods API
 //! - `let!`
 //! ```ignore
