@@ -2,5 +2,13 @@
 name = "yerevan"
 version = "0.1.0"
 edition = "2021"
+authors = ["Marat <marat2255a@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/marat0n/yerevan.rs"
+license = "MIT"
+license-file = "LICENSE.txt"
+keywords = ["CE", "computation expression", "F#", "fsharp", "do-notation"]
+description = "Small Rust crate that brings computation expressions idea from F# for help you to work easier with functors and monads."
+
 
 [dependencies]
