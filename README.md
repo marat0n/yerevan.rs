@@ -34,11 +34,30 @@ inspired by F#'s CEs, but with changes and improvements in syntax-design.
 
 # Docs
 
-Firstly define the struct which is implementing all the neccessary functions for <span>yerevan.rs</span>\'s computation expressions.
+1. Firstly define the struct which is implementing all the neccessary functions for <span>yerevan.rs</span>\'s computation expressions.
+Like this:
+```rust
+struct SimpleBinder {}
+impl SimpleBinder {
+    pub fn bind<T, U>(val: Option<T>, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+        match val {
+            Some(v) => f(v),
+                None => SimpleBinder::zero(),
+        }
+    }
+    pub fn ret<T>(val: T) -> Option<T> {
+        Some(val)
+    }
+    pub fn zero<T>() -> Option<T> {
+        None
+    }
+}
+```
+2. And then use your struct as computation expression type in `yer!` macro.
 Like this:
 ```rust
 yer! {
-    MyOption =>
+    SimpleBinder =>
     let! ...
     let ...
     ret ...
@@ -60,6 +79,6 @@ yer! {
 
 # Examples
 
-soon...
+For now examples are available in `/tests` directory in repository. GH-link: https://github.com/marat0n/yerevan.rs/blob/dev/tests/common.rs
 
 
