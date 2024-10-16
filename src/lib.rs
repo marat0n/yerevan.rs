@@ -17,8 +17,8 @@
 //! |`ret` wrapping and returning|`ret expression_to_return;`|`return expression_to_return`|
 //! |`ret!` return without wrapping|`ret! expression_to_return;`|`return! expression_to_return`|
 //! |`yield` wrapping and yielding|`yield expression_to_yield;`|`yield expression_to_yield`|
-//! |`run` takes last returned value
-//! |`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)|`YourStructName => ...`|`let yourStruct = YourStructName()`<br>`yourStruct { ... }`|
+//! |`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)|`YourStructName => ...`|`yourStructInstance { ... }`|
+//! |`run` takes last returned value|`run StructName => ...; ret state_for_run`|`yourStructInstance { ... }`|
 //!
 //! ## How to implement these methods in your struct?
 //! ### Note to Methods API
@@ -63,21 +63,26 @@
 //! member _.Combine<'T, 'U>(value: 'T, state: 'U) : 'U
 //! member _.Yield<'T>(value: 'T) : CEType<'T>
 //! ```
+//! - `run`
+//! ```ignore
+//! pub fn run<T, U>(state: T) -> U;
+//! ```
+//! F# way:
+//! ```fsharp
+//! member _.Run<'T, 'U> (state: 'T) : 'U
+//! ```
 //!
 //! ## Why CEs in Rust?
-//! Section for those who don't know why CEs are so useful.
+//! A section for those who don't know why CEs are so useful.
 //!
-//! In Rust you can use the `?` operator which is actually just a syntax sugar for situations,
-//! where you need to unwrap some value, but do it in a safe way.
-//! The `?` operator is based on the type you
-//! return from the function which is makes it useless in cases when you need to unwrap
-//! a different type. And some packages create their own implementations of Result or Option
-//! types which is also makes this operator less useful.
+//! In Rust you can use the ? operator which is actually just a syntax sugar for situations, where you need to safely unwrap some value.
+//! The ? operator is based on the type you return from the function which makes it useless in cases when you need to unwrap a different type. And some packages create their own implementations of Result or Option types which also makes this operator less useful.
 //!
-//! CEs are just functions you call in syntax-sugared way. And they are more flexible to types you
-//! use inside the CE you write. In CEs you can also make your own implementation of the unwrapping (it can be
-//! useful for logging in case of Options or Results). And this is not an end to CEs possibilities,
-//! they can be used as a Builder-pattern and much more.
+//! Also in Rust you can define your own macros to extend the language possibilities and use it just like CEs but with your own syntax.
+//! But creating a big macros can be tricky and difficult. And if you created your own syntax it's doesn't mean that this syntax will be readable for you or anyone else.
+//!
+//! CEs are just functions you call in syntax-sugared way. So you can create your own custom control-flow, just like with macros but with standard syntax.
+//! For example in CE-functions you can implement: builder pattern, safe unwrapper of enums (like Option or Result), etc.
 
 #[macro_use]
 pub mod yer_macro;
