@@ -6,7 +6,7 @@
 //!
 //! ## Note
 //! The things called [computation expressions](https://fsharpforfunandprofit.com/posts/computation-expressions-intro/) from F# are the same as [do-notations](https://en.wikibooks.org/wiki/Haskell/do_notation) from Haskell.
-//! 
+//!
 //! ## Features and syntax of [`yer!`] macro:
 //! |Feature|Syntax|F# way|
 //! |-|-|-|

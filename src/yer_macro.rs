@@ -160,4 +160,3 @@ macro_rules! yer {
     // exit-point
     ( $struct_name:ident => ) => { }
 }
-
