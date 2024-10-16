@@ -17,6 +17,7 @@
 //! |`ret` wrapping and returning|`ret expression_to_return;`|`return expression_to_return`|
 //! |`ret!` return without wrapping|`ret! expression_to_return;`|`return! expression_to_return`|
 //! |`yield` wrapping and yielding|`yield expression_to_yield;`|`yield expression_to_yield`|
+//! |`run` takes last returned value
 //! |`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)|`YourStructName => ...`|`let yourStruct = YourStructName()`<br>`yourStruct { ... }`|
 //!
 //! ## How to implement these methods in your struct?
