@@ -86,7 +86,7 @@ For now examples are available in `/tests` directory in repository. GH-link: htt
 
 __The linked ones are done, they are linked to the crates.io/crates/yerevan page to the version where this roadmap-point was done. Not linked points are the plan for future updates.__
 
-- 0.1
+- [0.1](https://crate.io/crates/yerevan/0.1.2)
   - `yer!` macro:
     - `some_struct =>` expression to create the specified structure context where all next expressions of that CE will be executed using methods of this structure (in FP that kind of structures are called [monads](https://en.wikipedia.org/wiki/Monad_(functional_programming)));
     - `let!` expression executed by `bind<T, U>: (val: T, fn: (T) -> U) -> U` method in your defined struct (monad);
