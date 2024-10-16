@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use std::i32;
+    use std::{fmt::Display, i32};
 
     use yerevan::yer;
 
@@ -27,8 +27,17 @@ mod tests {
                 (Some(mut unwrapped1), Some(mut unwrapped2)) => {
                     unwrapped2.append(&mut unwrapped1);
                     Some(unwrapped2)
-                },
-                _ => None
+                }
+                _ => None,
+            }
+        }
+        pub fn run<T>(val: Option<T>) -> String
+        where
+            T: Display,
+        {
+            match val {
+                Some(v) => format!("SOME: {}", v.to_string()),
+                None => "NONE".to_string(),
             }
         }
     }
@@ -42,7 +51,6 @@ mod tests {
             val
         }
     }
-
 
     #[test]
     fn check_binding_for_simplebinder() {
@@ -82,9 +90,7 @@ mod tests {
         assert_eq!(
             value_from_yer_macro.clone(),
             Incrementer::bind(1, &|unwrapped1| {
-                Incrementer::bind(2, &|unwrapped2| {
-                    Incrementer::ret(unwrapped2 + unwrapped1)
-                })
+                Incrementer::bind(2, &|unwrapped2| Incrementer::ret(unwrapped2 + unwrapped1))
             }),
             "Testing macro is returning the same value as the same non-yerevanized expression"
         );
@@ -139,26 +145,63 @@ mod tests {
         );
 
         assert_eq!(
-            value_from_yer_macro, 
-            SimpleBinder::bind(
-                Some(2), &|unwrapped1| {
-                    SimpleBinder::bind(
-                        Some(3), &|unwrapped2| {
-                            let one = 1;
-                            SimpleBinder::ret(
-                                Incrementer::bind(
-                                    one + unwrapped1 + unwrapped2, &|res| {
-                                        Incrementer::ret(res)
-                                    })
-                            )
-                        })
-                }),
+            value_from_yer_macro,
+            SimpleBinder::bind(Some(2), &|unwrapped1| {
+                SimpleBinder::bind(Some(3), &|unwrapped2| {
+                    let one = 1;
+                    SimpleBinder::ret(Incrementer::bind(one + unwrapped1 + unwrapped2, &|res| {
+                        Incrementer::ret(res)
+                    }))
+                })
+            }),
             "Testing macro is returning the same value as the same non-yerevanized expression"
         );
 
         assert_eq!(
-            value_from_yer_macro, Some(7),
+            value_from_yer_macro,
+            Some(7),
             "Testing specific tested yer-macro is returning a correct result"
+        );
+    }
+
+    #[test]
+    fn check_ce_run() {
+        let value_from_yer_macro1 = yer!(
+            run SimpleBinder =>
+            let! hello = Some("Hello!");
+            ret hello
+        );
+
+        let value_from_yer_macro2 = yer!(
+            run SimpleBinder =>
+            let! some_none = Option::<u8>::None;
+            ret some_none
+        );
+
+        assert_eq!(
+            value_from_yer_macro1,
+            SimpleBinder::run(SimpleBinder::bind(Some("Hello!"), &|hello| {
+                SimpleBinder::ret(hello)
+            })),
+            "1) Testing macro is returning the same value as the same non-yerevanized expression"
+        );
+
+        assert_eq!(
+            value_from_yer_macro2,
+            SimpleBinder::run(SimpleBinder::bind(Option::<u8>::None, &|hello| {
+                SimpleBinder::ret(hello)
+            })),
+            "2) Testing macro is returning the same value as the same non-yerevanized expression"
+        );
+
+        assert_eq!(
+            value_from_yer_macro1, "SOME: Hello!",
+            "1) Testing specific tested yer-macro is returning a correct result"
+        );
+
+        assert_eq!(
+            value_from_yer_macro2, "NONE",
+            "2) Testing specific tested yer-macro is returning a correct result"
         );
     }
 }

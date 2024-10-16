@@ -149,6 +149,11 @@ macro_rules! yer {
         )
     };
 
+    // running CE with run method
+    ( run $struct_name:ident => $($tail:tt)* ) => {
+        $struct_name::run({yer!($struct_name => $($tail)*)})
+    };
+
     // changing the CE-functions provider type
     ( $previous_struct_name:ident => $struct_name:ident => $($tail:tt)* ) => {
         $previous_struct_name::ret(yer!($struct_name => $($tail)*))
