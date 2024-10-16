@@ -168,34 +168,36 @@ mod tests {
     fn check_ce_run() {
         let value_from_yer_macro1 = yer!(
             run SimpleBinder =>
-            let! hello = Some("Hello!");
-            ret hello
+            let! one = Some(1);
+            Incrementer =>
+            let! two = one;
+            ret two
         );
 
         let value_from_yer_macro2 = yer!(
             run SimpleBinder =>
-            let! some_none = Option::<u8>::None;
+            let! some_none = Option::<i32>::None;
             ret some_none
         );
 
         assert_eq!(
             value_from_yer_macro1,
-            SimpleBinder::run(SimpleBinder::bind(Some("Hello!"), &|hello| {
-                SimpleBinder::ret(hello)
+            SimpleBinder::run(SimpleBinder::bind(Some(1), &|one| {
+                SimpleBinder::ret(Incrementer::bind(one, &|two| Incrementer::ret(two)))
             })),
             "1) Testing macro is returning the same value as the same non-yerevanized expression"
         );
 
         assert_eq!(
             value_from_yer_macro2,
-            SimpleBinder::run(SimpleBinder::bind(Option::<u8>::None, &|hello| {
+            SimpleBinder::run(SimpleBinder::bind(Option::<i32>::None, &|hello| {
                 SimpleBinder::ret(hello)
             })),
             "2) Testing macro is returning the same value as the same non-yerevanized expression"
         );
 
         assert_eq!(
-            value_from_yer_macro1, "SOME: Hello!",
+            value_from_yer_macro1, "SOME: 2",
             "1) Testing specific tested yer-macro is returning a correct result"
         );
 
