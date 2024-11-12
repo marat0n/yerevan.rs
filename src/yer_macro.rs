@@ -104,8 +104,10 @@ macro_rules! yer {
         do $expression:expr;
         $($tail:tt)*
     ) => {
-        $expression;
-        yer!($struct_name => $($tail)*)
+        {
+            $expression;
+            yer!($struct_name => $($tail)*)
+        }
     };
 
     // delay
