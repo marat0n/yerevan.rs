@@ -74,6 +74,16 @@ macro_rules! yer {
             yer!($struct_name => $($tail)*)
         })
     };
+    // let! with type
+    (
+        $struct_name:ident =>
+        let! $var_name:ident: $var_type:ty = $expression:expr;
+        $($tail:tt)*
+    ) => {
+        $struct_name::bind($expression, &|$var_name: $var_type| {
+            yer!($struct_name => $($tail)*)
+        })
+    };
 
     // do!
     (
@@ -94,6 +104,17 @@ macro_rules! yer {
     ) => {
         {
             let $var_name = $expression;
+            (yer!($struct_name => $($tail)*))
+        }
+    };
+    // let with type
+    (
+        $struct_name:ident =>
+        let $var_name:ident: $var_type:ty = $expression:expr;
+        $($tail:tt)*
+    ) => {
+        {
+            let $var_name: $var_type = $expression;
             (yer!($struct_name => $($tail)*))
         }
     };
