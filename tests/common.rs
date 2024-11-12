@@ -177,7 +177,7 @@ mod tests {
         let value_from_yer_macro2 = yer!(
             run SimpleBinder =>
             let! some_none = Option::<i32>::None;
-            ret some_none
+            ret <i32> some_none
         );
 
         assert_eq!(

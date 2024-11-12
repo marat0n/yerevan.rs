@@ -142,6 +142,10 @@ macro_rules! yer {
     //     })
     // };
 
+    // ret with generics
+    ( $struct_name:ident => ret <$($gtype:ty),+> $expression:expr ) => {
+        $struct_name::ret::<$($gtype),+>($expression)
+    };
     // ret
     ( $struct_name:ident => ret $expression:expr ) => {
         $struct_name::ret($expression)
@@ -150,6 +154,10 @@ macro_rules! yer {
     // ret!
     ( $struct_name:ident => ret! $expression:expr ) => {
         $struct_name::ret_from($expression)
+    };
+    // ret! with generics
+    ( $struct_name:ident => ret! <$($gtype:ty),+> $expression:expr ) => {
+        $struct_name::ret_from::<$($gtype),+>($expression)
     };
 
     // yield as return (last yield)
@@ -160,7 +168,7 @@ macro_rules! yer {
         $struct_name::ret_yield($expression)
     };
 
-    // yield with combiner
+    // combined yield
     (
         $struct_name:ident =>
         yield $expression:expr;
