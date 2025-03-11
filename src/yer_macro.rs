@@ -180,8 +180,31 @@ macro_rules! yer {
         )
     };
 
+    // yield! as return (last yield)
+    (
+        $struct_name:ident =>
+        yield! $expression:expr;
+    ) => {
+        $struct_name::ret_yield_from($expression)
+    };
+
+    // combined yield!
+    (
+        $struct_name:ident =>
+        yield! $expression:expr;
+        $($tail:tt)*
+    ) => {
+        $struct_name::combine(
+            yer!($struct_name => $($tail)*),
+            $struct_name::ret_yield_from($expression)
+        )
+    };
+
     // running CE with run method
     ( run $struct_name:ident => $($tail:tt)* ) => {
+        $struct_name::run({yer!($struct_name => $($tail)*)})
+    };
+    ( $struct_name:ident >> $($tail:tt)* ) => {
         $struct_name::run({yer!($struct_name => $($tail)*)})
     };
 
@@ -191,6 +214,24 @@ macro_rules! yer {
     };
     ( $previous_struct_name:ident => $struct_name:ident! => $($tail:tt)* ) => {
         $previous_struct_name::ret_from(yer!($struct_name => $($tail)*))
+    };
+
+    (
+        $struct_name:ident =>
+        if ($if_expr:expr) {
+            $($if_block:tt)*
+        }
+        $($tail:tt)*
+    ) => {
+        if $if_expr {
+            yer!(
+                $struct_name =>
+                $($if_block)*
+                $($tail)*
+            )
+        } else {
+            $struct_name::zero()
+        }
     };
 
     // exit-point

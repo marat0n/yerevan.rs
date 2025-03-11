@@ -206,4 +206,37 @@ mod tests {
             "2) Testing specific tested yer-macro is returning a correct result"
         );
     }
+
+    #[test]
+    fn check_if_expr() {
+        let value_from_yer_macro_if_true = yer!(
+            SimpleBinder =>
+            let! one = Some(1);
+            if (one == 1) {
+                yield one;
+            }
+            yield 2;
+        );
+
+        let value_from_yer_macro_if_false = yer!(
+            SimpleBinder =>
+            let! one = Some(1);
+            if (one == 0) {
+                yield one;
+            } // returnes None because SimpleBinder::zero returnes None
+            yield 2;
+        );
+
+        assert_eq!(
+            value_from_yer_macro_if_true,
+            Some(vec![1, 2]),
+            "True case. Testing that if-expressions workes properly and yer-macro is returning a correct result"
+        );
+
+        assert_eq!(
+            value_from_yer_macro_if_false,
+            None,
+            "False case. Testing that if-expressions workes properly and yer-macro is returning a correct result"
+        );
+    }
 }
