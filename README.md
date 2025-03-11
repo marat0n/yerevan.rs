@@ -29,8 +29,15 @@
 
 # Overview
 
-[yerevan.rs](https://github.com/marat0n/yerevan.rs) is a computation expressions (do-notations) library for Rust,
+[yerevan.rs](https://github.com/marat0n/yerevan.rs) is a Proof Of Concept (PoC) Rust library of Computation Expressions (CEs), aka "do-notations" in Haskel,
 inspired by F#'s CEs, but with changes and improvements in syntax-design.
+
+> 1. This package is a PoC of the idea that CEs could be very useful in Rust.
+> 2. The goal of this PoC is to evolve to a CEs feature proposal in Rust language, if it succeeds.
+
+## Why is this package only a PoC and not a solid solution?
+> 1. This package's implementation of CEs uses Rust macros, which slow the Rust compiler down. Besides, CEs are meant to be used often, which will significantly increase compilation time.
+> 2. Some syntax features of classical do-notations and CEs are not possible with Rust's `macro_rules`.
 
 # Docs
 
@@ -98,10 +105,15 @@ __The linked ones are done, they are linked to the crates.io/crates/yerevan page
     - `yield` expression executed by `combine<T, W<T>>: (val1: W<T>, val2: T) -> W<T>` where `val1`-parameter is used for all next code in CE and `val2`-parameter is used for executing `ret_yield<T, U>: (val: T) -> U`.
   - initial tests, examples, docs.
 - 0.2
-  - upgrade `yer!` macro:
-    - add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
-    - add expressions to macro: `yeild!`, `if ... else`, `if! ... else!`.
-  - create default CEs for Option and Result types.
+  - [ ] upgrade `yer!` macro:
+    - [x] add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
+    - [ ] add expressions to macro: `yeild!`, `if ... else`.
+  - [x] create default CEs for Option and Result types (Railway Execution type).
 - 0.3
-  - upgrade `yer!` macro:
-    - add ability assign your instructions to some operators inside `yer` macro.
+  - [ ] upgrade `yer!` macro:
+    - [ ] add loop-expressions to macro: `for`, `while`, `loop`.
+- 0.4
+  - [ ] upgrade `yer!` macro:
+    - [ ] add match-expression to macro.
+- 0.5
+  - [ ] add more interesting and usefull CEs.
