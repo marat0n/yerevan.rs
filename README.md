@@ -105,9 +105,10 @@ __The linked ones are done, they are linked to the crates.io/crates/yerevan page
     - `yield` expression executed by `combine<T, W<T>>: (val1: W<T>, val2: T) -> W<T>` where `val1`-parameter is used for all next code in CE and `val2`-parameter is used for executing `ret_yield<T, U>: (val: T) -> U`.
   - initial tests, examples, docs.
 - 0.2
-  - [ ] upgrade `yer!` macro:
+  - [x] upgrade `yer!` macro:
     - [x] add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
-    - [ ] add expressions to macro: `yeild!`, `if ... else`.
+    - [x] add expressions to macro: `yeild!`, `if ... else`.
+        - CAUTION: `else` is not available for now, if you know how to implement it then please create a PR
   - [x] create default CEs for Option and Result types (Railway Execution type).
 - 0.3
   - [ ] upgrade `yer!` macro:
