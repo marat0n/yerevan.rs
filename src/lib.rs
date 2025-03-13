@@ -19,7 +19,7 @@
 //! |`yield` wrapping and yielding|`yield expression_to_yield;`|`yield expression_to_yield`|
 //! |`yield!` flattening value of accamulated type (flattened yielding)|`yield! expression_to_yield_from;`|`yield! expression_to_yield_from`|
 //! |`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)|`YourStructName => ...`|`yourStructInstance { ... }`|
-//! |`run` takes last returned value|`run StructName => ...; ret state_for_run` or `StructName >> ...; ret ...`|`yourStructInstance { ... }`|
+//! |`run` takes last returned value and puts it into `YourStruct::run` method|`run StructName => ...; ret state_for_run` or `StructName >> ...; ret ...`|`yourStructInstance { ... }`|
 //! |`if` generating Rust's if-statement|`if (true) { yield "something"; }|`if true then yield "something"|
 //!
 //! ## How to implement these methods in your struct?

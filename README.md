@@ -83,6 +83,8 @@ yer! {
 |yield $your_expression|Uses the last defined struct in macros as the provider of `combine` and `ret_yield` functions and calls the `$that_struct::combine(yer!($that_struct => next code, $that_struct::ret_yield($your_expression))` expression.|
 |yield! $your_expression|Works the same as `yield` but uses `$your_struct::ret_yield_from` instead of `ret_yield`|
 |if ( $statement ) { $body }|Uses Rust's if-statement as an expression where `$body` is wrapped by `yer!` macro, and `$your_struct::zero()` for else case|
+|run $your_struct =>|Uses `$your_struct::run` function by providing last returned value from the CE as an argument for that function|
+|$your_struct >>|The same as `run` keyword|
 
 
 
@@ -95,7 +97,7 @@ For now examples are available in `/tests` directory in repository. GH-link: htt
 
 __The linked ones are done, they are linked to the crates.io/crates/yerevan page to the version where this roadmap-point was done. Not linked points are the plan for future updates.__
 
-- [0.1](https://crates.io/crates/yerevan/0.1.2)
+- [0.1](https://crates.io/crates/yerevan/0.1.6)
   - `yer!` macro:
     - `some_struct =>` expression to create the specified structure context where all next expressions of that CE will be executed using methods of this structure (in FP that kind of structures are called [monads](https://en.wikipedia.org/wiki/Monad_(functional_programming)));
     - `let!` expression executed by `bind<T, U>: (val: T, fn: (T) -> U) -> U` method in your defined struct (monad);
@@ -106,7 +108,7 @@ __The linked ones are done, they are linked to the crates.io/crates/yerevan page
     - `ret` expression executed by `ret<T, W<T>>: (val: T) -> W<T>` method in your defined struct (monad);
     - `yield` expression executed by `combine<T, W<T>>: (val1: W<T>, val2: T) -> W<T>` where `val1`-parameter is used for all next code in CE and `val2`-parameter is used for executing `ret_yield<T, U>: (val: T) -> U`.
   - initial tests, examples, docs.
-- 0.2
+- [0.2](https://crates.io/crates/yerevan/0.2.3)
   - [x] upgrade `yer!` macro:
     - [x] add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
     - [x] add expressions to macro: `yeild!`, `if ... else`.
