@@ -22,6 +22,9 @@ mod tests {
         pub fn ret_yield<T>(val: T) -> Option<Vec<T>> {
             Some(vec![val])
         }
+        pub fn ret_yield_from<T>(val: Option<Vec<T>>) -> Option<Vec<T>> {
+            val
+        }
         pub fn combine<T>(val1: Option<Vec<T>>, val2: Option<Vec<T>>) -> Option<Vec<T>> {
             match (val1, val2) {
                 (Some(mut unwrapped1), Some(mut unwrapped2)) => {
@@ -121,13 +124,14 @@ mod tests {
             let! some_value = Some(1);
             yield some_value; // yielding 1
             yield 2; // yielding 2
-            let some_sum = some_value + 2; // result is 3
-            yield some_sum; // yielding 3
+            yield! Some(vec![3, 4]); // flattened yielding of vector [3, 4]
+            let some_sum = some_value + 4; // result is 5
+            yield some_sum; // yielding 5
         );
 
         assert_eq!(
             value_from_yer_macro,
-            Some(vec![1, 2, 3]),
+            Some(vec![1, 2, 3, 4, 5]),
             "Testing yielding values to one-dimensional vec"
         );
     }

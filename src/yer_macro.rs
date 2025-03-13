@@ -160,26 +160,6 @@ macro_rules! yer {
         $struct_name::ret_from::<$($gtype),+>($expression)
     };
 
-    // yield as return (last yield)
-    (
-        $struct_name:ident =>
-        yield $expression:expr;
-    ) => {
-        $struct_name::ret_yield($expression)
-    };
-
-    // combined yield
-    (
-        $struct_name:ident =>
-        yield $expression:expr;
-        $($tail:tt)*
-    ) => {
-        $struct_name::combine(
-            yer!($struct_name => $($tail)*),
-            $struct_name::ret_yield($expression)
-        )
-    };
-
     // yield! as return (last yield)
     (
         $struct_name:ident =>
@@ -197,6 +177,26 @@ macro_rules! yer {
         $struct_name::combine(
             yer!($struct_name => $($tail)*),
             $struct_name::ret_yield_from($expression)
+        )
+    };
+
+    // yield as return (last yield)
+    (
+        $struct_name:ident =>
+        yield $expression:expr;
+    ) => {
+        $struct_name::ret_yield($expression)
+    };
+
+    // combined yield
+    (
+        $struct_name:ident =>
+        yield $expression:expr;
+        $($tail:tt)*
+    ) => {
+        $struct_name::combine(
+            yer!($struct_name => $($tail)*),
+            $struct_name::ret_yield($expression)
         )
     };
 
