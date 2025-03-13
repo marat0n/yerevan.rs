@@ -81,6 +81,8 @@ yer! {
 |ret! $your_expression|Uses the last defined struct in macros as the provider of `ret_from` function and calls the `$that_struct::ret_from($your_expression)` expression.|
 |ret $your_expression|Uses the last defined struct in macros as the provider of `ret` function and calls the `$that_struct::ret($your_expression)` expression.|
 |yield $your_expression|Uses the last defined struct in macros as the provider of `combine` and `ret_yield` functions and calls the `$that_struct::combine(yer!($that_struct => next code, $that_struct::ret_yield($your_expression))` expression.|
+|yield! $your_expression|Works the same as `yield` but uses `$your_struct::ret_yield_from` instead of `ret_yield`|
+|if ( $statement ) { $body }|Uses Rust's if-statement as an expression where `$body` is wrapped by `yer!` macro, and `$your_struct::zero()` for else case|
 
 
 
