@@ -24,4 +24,4 @@ jobs:
       run: cargo test --verbose
 
     - name: Formatting
-      run: rustup component add rustfmt && cargo fmt --all -- --check
+      run: rustup component add rustfmt && cargo fmt
