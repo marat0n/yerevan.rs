@@ -8,45 +8,45 @@
 //! The things called [computation expressions](https://fsharpforfunandprofit.com/posts/computation-expressions-intro/) from F# are almost the same as [do-notations](https://en.wikibooks.org/wiki/Haskell/do_notation) from Haskell.
 //!
 //! ## Features and syntax of [`yer!`] macro:
-//! **let! unwrapping-binding**
-//! Syntax: `let! your_var = some_expression_to_bind;`
-//! F# way: `let! your_var = some_expression_to_bind`
+//! **let! unwrapping-binding** <br>
+//! Syntax: `let! your_var = some_expression_to_bind;` <br>
+//! F# way: `let! your_var = some_expression_to_bind` <br>
 //!
-//! **let usual var-defining**
-//! Syntax: `let your_var = some_expression;`
-//! F# way: `let your_var = some_expression`
+//! **let usual var-defining** <br>
+//! Syntax: `let your_var = some_expression;` <br>
+//! F# way: `let your_var = some_expression` <br>
 //!
-//! **do! unwrapping expression without binding**
-//! Syntax: `do! some_expression_to_unwrap;`
-//! F# way: `do! some_expression_to_unwrap`
+//! **do! unwrapping expression without binding** <br>
+//! Syntax: `do! some_expression_to_unwrap;` <br>
+//! F# way: `do! some_expression_to_unwrap` <br>
 //!
-//! **do just executing expression**
-//! Syntax: `let some_expression;`
-//! F# way: `do some_expression`
+//! **do just executing expression** <br>
+//! Syntax: `let some_expression;` <br>
+//! F# way: `do some_expression` <br>
 //!
-//! **ret wrapping and returning**
-//! Syntax: `ret expression_to_return;`
-//! F# way: `return expression_to_return`
+//! **ret wrapping and returning** <br>
+//! Syntax: `ret expression_to_return;` <br>
+//! F# way: `return expression_to_return` <br>
 //!
-//! **ret! return without wrapping**
-//! Syntax: `ret! expression_to_return;`
-//! F# way: `return! expression_to_return`
+//! **ret! return without wrapping** <br>
+//! Syntax: `ret! expression_to_return;` <br>
+//! F# way: `return! expression_to_return` <br>
 //!
-//! **yield wrapping and yielding**
-//! Syntax: `yield expression_to_yield;`
-//! F# way: `yield expression_to_yield`
+//! **yield wrapping and yielding** <br>
+//! Syntax: `yield expression_to_yield;` <br>
+//! F# way: `yield expression_to_yield` <br>
 //!
-//! **yield! flattening value of accamulated type (flattened yielding)**
-//! Syntax: `yield! expression_to_yield_from;`
-//! F# way: `yield! expression_to_yield_from`
+//! **yield! flattening value of accamulated type (flattened yielding)** <br>
+//! Syntax: `yield! expression_to_yield_from;` <br>
+//! F# way: `yield! expression_to_yield_from` <br>
 //!
-//! **`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)**
-//! Syntax: `YourStructName => ...`
-//! F# way: `yourStructInstance { ... }`
+//! **`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)** <br>
+//! Syntax: `YourStructName => ...` <br>
+//! F# way: `yourStructInstance { ... }` <br>
 //!
-//! **`run` takes last returned value and puts it into `YourStruct::run` method**
+//! **`run` takes last returned value and puts it into `YourStruct::run` method** <br>
 //! Syntax:
-//! ```ignore
+//! ```text
 //! run StructName => ...;
 //! ret state_for_run
 //! 
@@ -55,11 +55,11 @@
 //! `StructName >> ...;
 //! ret state_for_run
 //! ```
-//! F# way: `yourStructInstance { ... }`
+//! F# way: `yourStructInstance { ... }` <br>
 //!
 //! **if-else generating Rust's if-statement**
 //! Syntax:
-//! ```ignore
+//! ```text
 //! if (bool_expr) { yield "something"; }
 //! else if (bool_expr) { yield "something else"; }
 //! else { yield "nothing"; }

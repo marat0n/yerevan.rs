@@ -70,21 +70,44 @@ yer! {
     ret ...
 }
 ```
+### Expressions
+1. `$your_struct => ` defines the struct as the provider of computation expression functions.
 
-|yer! expression|description|
-| --- | ---|
-|$your_struct => | Defines the struct as the provider of computation expression functions. |
-|let $your_var = $your_expression|Uses the last defined struct in macros as the provider of `bind` function and calls the `$that_struct::bind($your_expression, &\|$your_var\| { next code })` expression.|
-|let $your_var = $your_expression|Defines the variable `$your_var`|
-|do! $your_expression|Uses the last defined struct in macros as the provider of `bind` function and calls the `$that_struct::bind($your_expression, &\|_\| { next code })` expression.|
-|do $your_expression|Simply runs `$your_expression`|
-|ret! $your_expression|Uses the last defined struct in macros as the provider of `ret_from` function and calls the `$that_struct::ret_from($your_expression)` expression.|
-|ret $your_expression|Uses the last defined struct in macros as the provider of `ret` function and calls the `$that_struct::ret($your_expression)` expression.|
-|yield $your_expression|Uses the last defined struct in macros as the provider of `combine` and `ret_yield` functions and calls the `$that_struct::combine(yer!($that_struct => next code, $that_struct::ret_yield($your_expression))` expression.|
-|yield! $your_expression|Works the same as `yield` but uses `$your_struct::ret_yield_from` instead of `ret_yield`|
-|if ( $statement ) { $body } else if ( $statement ) { $body } else { $body }|Uses Rust's if-statement as an expression where `$body` is wrapped by `yer!` macro, and `$your_struct::zero()` for else case|
-|run $your_struct =>|Uses `$your_struct::run` function by providing last returned value from the CE as an argument for that function|
-|$your_struct >>|The same as `run` keyword|
+2. `let! $your_var = $your_expression` uses the last defined struct in macros as the provider of `bind` function and calls the `$that_struct::bind($your_expression, &\|$your_var\| { next code })` expression.
+
+3. `let $your_var = $your_expression` defines the variable `$your_var`.
+
+4. `do! $your_expression` uses the last defined struct in macros as the provider of `bind` function and calls the `$that_struct::bind($your_expression, &\|_\| { next code })` expression.
+
+5. `do $your_expression` simply runs `$your_expression`.
+
+6. `ret! $your_expression` uses the last defined struct in macros as the provider of `ret_from` function and calls the `$that_struct::ret_from($your_expression)` expression.
+
+7. `ret $your_expression` uses the last defined struct in macros as the provider of `ret` function and calls the `$that_struct::ret($your_expression)` expression.
+
+8. `yield $your_expression` uses the last defined struct in macros as the provider of `combine` and `ret_yield` functions and calls the `$that_struct::combine(yer!($that_struct => next code, $that_struct::ret_yield($your_expression))` expression.
+
+9. `yield! $your_expression` works the same as `yield` but uses `$your_struct::ret_yield_from` instead of `ret_yield`.
+
+10. If-branching:
+```rust
+if ( $statement ) {
+    $body
+} else if ( $statement ) {
+    $body
+} else { $body }
+
+// or
+
+if ( $statement ) {
+    $body
+} else zero;
+```
+— Uses Rust's if-statement as an expression where `$body` is wrapped by `yer!` macro, and `$your_struct::zero()` for else case.
+
+11. `run $your_struct =>` uses `$your_struct::run` function by providing last returned value from the CE as an argument for that function.
+
+12. `$your_struct >>` is the same as `run` keyword.
 
 
 
@@ -108,7 +131,7 @@ __The linked ones are done, they are linked to the crates.io/crates/yerevan page
     - `ret` expression executed by `ret<T, W<T>>: (val: T) -> W<T>` method in your defined struct (monad);
     - `yield` expression executed by `combine<T, W<T>>: (val1: W<T>, val2: T) -> W<T>` where `val1`-parameter is used for all next code in CE and `val2`-parameter is used for executing `ret_yield<T, U>: (val: T) -> U`.
   - initial tests, examples, docs.
-- [0.2](https://crates.io/crates/yerevan/0.2.5)
+- [0.2](https://crates.io/crates/yerevan/0.2.6)
   - [x] upgrade `yer!` macro:
     - [x] add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
     - [x] add expressions to macro: `yeild!`, `if ... else`.
