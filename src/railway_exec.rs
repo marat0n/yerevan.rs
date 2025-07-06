@@ -24,7 +24,7 @@
 ///     let! something = Some("something");
 ///     do! Option::<()>::None; // stop execution here
 ///     ret something
-/// }; // Do not execute "ret" instruction and returns None
+/// }; // Does not execute "ret" instruction and returns None
 /// ```
 pub struct RailwayBinder {}
 
@@ -62,7 +62,7 @@ impl<T, E> RailwayExec<T> for Result<T, E> {
     fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
         match self {
             Ok(val) => f(val),
-            Err(_) => None,
+            _ => None,
         }
     }
 }
@@ -71,7 +71,7 @@ impl<T> RailwayExec<T> for Option<T> {
     fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
         match self {
             Some(val) => f(val),
-            None => None,
+            _ => None,
         }
     }
 }
@@ -85,4 +85,3 @@ impl RailwayBinder {
         Some(val)
     }
 }
-
