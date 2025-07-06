@@ -29,7 +29,7 @@
 
 # Overview
 
-[yerevan.rs](https://github.com/marat0n/yerevan.rs) is a Proof Of Concept (PoC) Rust library of Computation Expressions (CEs), aka "do-notations" in Haskel,
+[yerevan.rs](https://github.com/marat0n/yerevan.rs) is a Proof Of Concept (PoC) Rust library of Computation Expressions (CEs), aka "do-notations" in Haskell,
 inspired by F#'s CEs, but with changes and improvements in syntax-design.
 
 > 1. This package is a PoC of the idea that CEs could be very useful in Rust.
@@ -41,7 +41,7 @@ inspired by F#'s CEs, but with changes and improvements in syntax-design.
 
 # Docs
 
-1. Firstly define the struct which is implementing all the neccessary functions for <span>yerevan.rs</span>\'s computation expressions.
+1. Firstly define the struct which is implementing all the neccessary functions for yerevan.rs's computation expressions.
 Like this:
 ```rust
 struct SimpleBinder {}
