@@ -43,20 +43,25 @@
 ///         let! res = one + unwrapped1 + (unwrapped2.len() as i32);
 ///         ret res
 ///     );
+///
 ///     let by_hand =
 ///         SimpleBinder::bind(
-///         wrapped1, &|unwrapped1| {
-///         SimpleBinder::bind(
-///         wrapped2, &|unwrapped2| {
-///         let one = 1;
-///         SimpleBinder::ret(
-///         Incrementer::bind(
-///         one + unwrapped1 + (unwrapped2.len() as i32), &|res| {
-///         Incrementer::ret(res)
-///         })
-///         )
-///         })
-///         });
+///             wrapped1, &|unwrapped1| {
+///                 SimpleBinder::bind(
+///                     wrapped2, &|unwrapped2| {
+///                         let one = 1;
+///                         SimpleBinder::ret(
+///                             Incrementer::bind(
+///                                 one + unwrapped1 + (unwrapped2.len() as i32), &|res| {
+///                                     Incrementer::ret(res)
+///                                 }
+///                             )
+///                         )
+///                     }
+///                 )
+///             }
+///         );
+///
 ///     from_macro == by_hand // true
 /// }
 /// ```
@@ -67,20 +72,10 @@ macro_rules! yer {
     // let!
     (
         $struct_name:ident =>
-        let! $var_name:ident = $expression:expr;
+        let! $var_name:ident$(: $var_type:ty)? = $expression:expr;
         $($tail:tt)*
     ) => {
-        $struct_name::bind($expression, &|$var_name| {
-            yer!($struct_name => $($tail)*)
-        })
-    };
-    // let! with type
-    (
-        $struct_name:ident =>
-        let! $var_name:ident: $var_type:ty = $expression:expr;
-        $($tail:tt)*
-    ) => {
-        $struct_name::bind($expression, &|$var_name: $var_type| {
+        $struct_name::bind($expression, &|$var_name $(: $var_type)?| {
             yer!($struct_name => $($tail)*)
         })
     };
@@ -99,22 +94,11 @@ macro_rules! yer {
     // let
     (
         $struct_name:ident =>
-        let $var_name:ident = $expression:expr;
+        let $var_name:ident $(: $var_type:ty)? = $expression:expr;
         $($tail:tt)*
     ) => {
         {
-            let $var_name = $expression;
-            (yer!($struct_name => $($tail)*))
-        }
-    };
-    // let with type
-    (
-        $struct_name:ident =>
-        let $var_name:ident: $var_type:ty = $expression:expr;
-        $($tail:tt)*
-    ) => {
-        {
-            let $var_name: $var_type = $expression;
+            let $var_name $(: $var_type)? = $expression;
             (yer!($struct_name => $($tail)*))
         }
     };
@@ -130,17 +114,6 @@ macro_rules! yer {
             yer!($struct_name => $($tail)*)
         }
     };
-
-    // delay
-    // (
-    //     $struct_name:ident =>
-    //     delay $expression:expr;
-    //     $($tail:tt)*
-    // ) => {
-    //     $struct_name::delay($expression, &|delayed| {
-    //         yer!($struct_name => $($tail)*)
-    //     })
-    // };
 
     // ret with generics
     ( $struct_name:ident => ret <$($gtype:ty),+> $expression:expr ) => {
@@ -216,24 +189,60 @@ macro_rules! yer {
         $previous_struct_name::ret_from(yer!($struct_name => $($tail)*))
     };
 
+    // If-branching
+    (
+        $struct_name:ident =>
+        if ($if_expr:expr) {
+            $($if_block:tt)*
+        } else zero;
+        $($tail:tt)*
+    ) => {
+        {
+            $struct_name::combine(
+                yer!($struct_name => $($tail)*),
+                if $if_expr {
+                    yer!(
+                        $struct_name =>
+                        $($if_block)*
+                    )
+                }
+                else { $struct_name::zero() }
+            )
+        }
+    };
+
     (
         $struct_name:ident =>
         if ($if_expr:expr) {
             $($if_block:tt)*
         }
+        $( else if ($else_if_expr:expr) {
+            $($else_if_block:tt)*
+        })*
+        else {
+            $($else_block:tt)*
+        }
         $($tail:tt)*
     ) => {
-        if $if_expr {
-            yer!(
-                $struct_name =>
-                $($if_block)*
-                $($tail)*
+        {
+            $struct_name::combine(
+                yer!($struct_name => $($tail)*),
+                if $if_expr {
+                    yer!(
+                        $struct_name =>
+                        $($if_block)*
+                    )
+                }
+                $(else if $else_if_expr {
+                    yer!($struct_name => $($else_if_block)*)
+                })*
+                else {
+                    yer!($struct_name => $($else_block)*)
+                }
             )
-        } else {
-            $struct_name::zero()
         }
     };
 
     // exit-point
-    ( $struct_name:ident => ) => { }
+    ( $struct_name:ident => ) => { };
 }

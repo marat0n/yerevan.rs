@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests {
     use std::{fmt::Display, i32};
-
     use yerevan::yer;
 
     // Some simple user-defined structs for compuation expressions
@@ -10,7 +9,7 @@ mod tests {
         pub fn bind<T, U>(val: Option<T>, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
             match val {
                 Some(v) => f(v),
-                None => SimpleBinder::zero(),
+                _ => SimpleBinder::zero(),
             }
         }
         pub fn ret<T>(val: T) -> Option<T> {
@@ -40,7 +39,7 @@ mod tests {
         {
             match val {
                 Some(v) => format!("SOME: {}", v.to_string()),
-                None => "NONE".to_string(),
+                _ => "NONE".to_string(),
             }
         }
     }
@@ -85,15 +84,17 @@ mod tests {
     fn check_binding_for_incrementer() {
         let value_from_yer_macro = yer!(
             Incrementer =>
-            let! unwrapper1 = 1; // incrementing to 2
-            let! unwrapped2 = 2; // incrementing to 3
-            ret unwrapped2 + unwrapper1 // returning 5
+            let! incremented1 = 1; // incrementing to 2
+            let! incremented2 = 2; // incrementing to 3
+            ret incremented2 + incremented1 // returning 5
         );
 
         assert_eq!(
             value_from_yer_macro.clone(),
-            Incrementer::bind(1, &|unwrapped1| {
-                Incrementer::bind(2, &|unwrapped2| Incrementer::ret(unwrapped2 + unwrapped1))
+            Incrementer::bind(1, &|incremented1| {
+                Incrementer::bind(2, &|incremented2| {
+                    Incrementer::ret(incremented2 + incremented1)
+                })
             }),
             "Testing macro is returning the same value as the same non-yerevanized expression"
         );
@@ -218,7 +219,7 @@ mod tests {
             let! one = Some(1);
             if (one == 1) {
                 yield one;
-            }
+            } else zero;
             yield 2;
         );
 
@@ -227,8 +228,21 @@ mod tests {
             let! one = Some(1);
             if (one == 0) {
                 yield one;
-            } // returnes None because SimpleBinder::zero returnes None
+            } else zero; // returns None because SimpleBinder::zero returns None
             yield 2;
+        );
+
+        let value_from_yer_macro_with_else = yer!(
+            SimpleBinder =>
+            let! one = Some(1);
+            if (one == 0) {
+                yield one;
+            } else if (one - one == 0) {
+                yield 2;
+            } else {
+                yield 3;
+            }
+            yield 4;
         );
 
         assert_eq!(
@@ -241,6 +255,12 @@ mod tests {
             value_from_yer_macro_if_false,
             None,
             "False case. Testing that if-expressions workes properly and yer-macro is returning a correct result"
+        );
+
+        assert_eq!(
+            value_from_yer_macro_with_else,
+            Some(vec![2, 4]),
+            "Else case. Testing that if-else-expressions workes properly and yer-macro is returning a correct result"
         );
     }
 }
