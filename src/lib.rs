@@ -10,18 +10,69 @@
 //! ## Features and syntax of [`yer!`] macro:
 //! |Feature|Syntax|F# way|
 //! |-|-|-|
-//! |`let!` unwrapping-binding|`let! your_var = some_expression_to_bind;`|`let! your_var = some_expression_to_bind`|
-//! |`let` usual var-defining|`let your_var = some_expression;`|`let your_var = some_expression`|
-//! |`do!` unwrapping expression without binding|`do! some_expression_to_unwrap;`|`do! some_expression_to_unwrap`|
-//! |`do` just executing expression|`let some_expression;`|`do some_expression`|
-//! |`ret` wrapping and returning|`ret expression_to_return;`|`return expression_to_return`|
-//! |`ret!` return without wrapping|`ret! expression_to_return;`|`return! expression_to_return`|
-//! |`yield` wrapping and yielding|`yield expression_to_yield;`|`yield expression_to_yield`|
-//! |`yield!` flattening value of accamulated type (flattened yielding)|`yield! expression_to_yield_from;`|`yield! expression_to_yield_from`|
-//! |`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)|`YourStructName => ...`|`yourStructInstance { ... }`|
-//! |`run` takes last returned value and puts it into `YourStruct::run` method|`run StructName => ...; ret state_for_run` or `StructName >> ...; ret ...`|`yourStructInstance { ... }`|
-//! |`if` generating Rust's if-statement|`if (true) { yield "something"; }|`if true then yield "something"|
+//! **let! unwrapping-binding**
+//! Syntax: `let! your_var = some_expression_to_bind;`
+//! F# way: `let! your_var = some_expression_to_bind`
 //!
+//! **let usual var-defining**
+//! Syntax: `let your_var = some_expression;`
+//! F# way: `let your_var = some_expression`
+//!
+//! **do! unwrapping expression without binding**
+//! Syntax: `do! some_expression_to_unwrap;`
+//! F# way: `do! some_expression_to_unwrap`
+//!
+//! **do just executing expression**
+//! Syntax: `let some_expression;`
+//! F# way: `do some_expression`
+//!
+//! **ret wrapping and returning**
+//! Syntax: `ret expression_to_return;`
+//! F# way: `return expression_to_return`
+//!
+//! **ret! return without wrapping**
+//! Syntax: `ret! expression_to_return;`
+//! F# way: `return! expression_to_return`
+//!
+//! **yield wrapping and yielding**
+//! Syntax: `yield expression_to_yield;`
+//! F# way: `yield expression_to_yield`
+//!
+//! **yield! flattening value of accamulated type (flattened yielding)**
+//! Syntax: `yield! expression_to_yield_from;`
+//! F# way: `yield! expression_to_yield_from`
+//!
+//! **`StructName =>` setting up or changing the CE-struct (struct which is providing specific methods for yer! macro)**
+//! Syntax: `YourStructName => ...`
+//! F# way: `yourStructInstance { ... }`
+//!
+//! **`run` takes last returned value and puts it into `YourStruct::run` method**
+//! Syntax:
+//! ```ignore
+//! run StructName => ...;
+//! ret state_for_run
+//! 
+//! // or
+//!
+//! `StructName >> ...;
+//! ret state_for_run
+//! ```
+//! F# way: `yourStructInstance { ... }`
+//!
+//! **if-else generating Rust's if-statement**
+//! Syntax:
+//! ```ignore
+//! if (bool_expr) { yield "something"; }
+//! else if (bool_expr) { yield "something else"; }
+//! else { yield "nothing"; }
+//!
+//! // or
+//!
+//! if (bool_expr) { yield "something"; }
+//! else zero; // needs `zero` method
+//! ```
+//! F# way: `if true then yield "something"
+//
 //! ## How to implement these methods in your struct?
 //! ### Note to Methods API
 //! There is no specific type you have to use by using methods signatures defined below.
