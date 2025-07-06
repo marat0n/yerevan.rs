@@ -108,7 +108,7 @@ __The linked ones are done, they are linked to the crates.io/crates/yerevan page
     - `ret` expression executed by `ret<T, W<T>>: (val: T) -> W<T>` method in your defined struct (monad);
     - `yield` expression executed by `combine<T, W<T>>: (val1: W<T>, val2: T) -> W<T>` where `val1`-parameter is used for all next code in CE and `val2`-parameter is used for executing `ret_yield<T, U>: (val: T) -> U`.
   - initial tests, examples, docs.
-- [0.2](https://crates.io/crates/yerevan/0.2.3)
+- [0.2](https://crates.io/crates/yerevan/0.2.4)
   - [x] upgrade `yer!` macro:
     - [x] add implentation for methods: `Run`, `YieldFrom`, `Zero` from F#'s CE-types;
     - [x] add expressions to macro: `yeild!`, `if ... else`.
