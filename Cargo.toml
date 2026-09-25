@@ -1,8 +1,8 @@
 [package]
 name = "yerevan"
-version = "0.2.6"
+version = "0.2.7"
 edition = "2021"
-authors = ["Marat <marat2255a@gmail.com>"]
+authors = ["Marat <m.gevorkyan@tutamail.com>"]
 readme = "README.md"
 repository = "https://github.com/marat0n/yerevan.rs"
 license = "MIT"
