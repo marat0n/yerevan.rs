@@ -8,6 +8,3 @@ repository = "https://github.com/marat0n/yerevan.rs"
 license = "MIT"
 keywords = ["CE", "computation_expr", "fsharp", "do-notation"]
 description = "Small Rust crate that brings computation expressions idea from F# for help you to work easier with functors and monads."
-
-
-[dependencies]
