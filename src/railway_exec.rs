@@ -34,7 +34,7 @@ pub struct RailwayBinder {}
 /// Example of implementation for Result:
 /// ```rust,ignore
 /// impl<T, E> RailwayExec<T> for Result<T, E> {
-///     fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+///     fn bind<U>(self, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
 ///         match self {
 ///             Ok(val) => f(val),
 ///             Err(_) => None,
@@ -46,7 +46,7 @@ pub struct RailwayBinder {}
 /// Example of implementation for Option:
 /// ```rust,ignore
 /// impl<T> RailwayExec<T> for Option<T> {
-///     fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+///     fn bind<U>(self, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
 ///         match self {
 ///             Some(val) => f(val),
 ///             None => None,
@@ -55,11 +55,11 @@ pub struct RailwayBinder {}
 /// }
 /// ```
 pub trait RailwayExec<T> {
-    fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U>;
+    fn bind<U>(self, f: impl FnOnce(T) -> Option<U>) -> Option<U>;
 }
 
 impl<T, E> RailwayExec<T> for Result<T, E> {
-    fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+    fn bind<U>(self, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
         match self {
             Ok(val) => f(val),
             _ => None,
@@ -68,7 +68,7 @@ impl<T, E> RailwayExec<T> for Result<T, E> {
 }
 
 impl<T> RailwayExec<T> for Option<T> {
-    fn bind<U>(self, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+    fn bind<U>(self, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
         match self {
             Some(val) => f(val),
             _ => None,
@@ -78,7 +78,7 @@ impl<T> RailwayExec<T> for Option<T> {
 
 /// Implementation for simple railway-executions.
 impl RailwayBinder {
-    pub fn bind<T, U, R: RailwayExec<T>>(val: R, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+    pub fn bind<T, U, R: RailwayExec<T>>(val: R, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
         val.bind(f)
     }
     pub fn ret<T>(val: T) -> Option<T> {

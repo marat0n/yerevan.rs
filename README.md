@@ -46,7 +46,7 @@ Like this:
 ```rust
 struct SimpleBinder {}
 impl SimpleBinder {
-    pub fn bind<T, U>(val: Option<T>, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+    pub fn bind<T, U>(val: Option<T>, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
         match val {
             Some(v) => f(v),
                 None => SimpleBinder::zero(),

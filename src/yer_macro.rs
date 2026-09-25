@@ -3,13 +3,13 @@
 /// `yerevan.rs` macros for fancy-shmancy syntax for computation expressions.
 ///
 /// Example:
-/// ```rust
+/// ```
 /// use yerevan::yer;
 ///
 /// // Some simple user-defined structs for compuation expressions
 /// struct SimpleBinder {}
 /// impl SimpleBinder {
-///     pub fn bind<T, U>(val: Option<T>, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+///     pub fn bind<T, U>(val: Option<T>, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
 ///         match val {
 ///             Some(v) => f(v),
 ///             None => SimpleBinder::zero(),
@@ -25,7 +25,7 @@
 ///
 /// struct Incrementer {}
 /// impl Incrementer {
-///     pub fn bind(val: i32, f: &dyn Fn(i32) -> i32) -> i32 {
+///     pub fn bind(val: i32, f: impl FnOnce(i32) -> i32) -> i32 {
 ///         f(val + 1)
 ///     }
 ///     pub fn ret(val: i32) -> i32 {
@@ -37,10 +37,11 @@
 ///     let from_macro = yer!(
 ///         SimpleBinder =>
 ///         let! unwrapped1 = wrapped1;
-///         let! unwrapped2 = wrapped2;
+///         let! unwrapped2: &str = wrapped2;
 ///         let one = 1;
 ///         Incrementer =>
-///         let! res = one + unwrapped1 + (unwrapped2.len() as i32);
+///         let unwrapped2_len = unwrapped2.len() as i32;
+///         let! res = one + unwrapped1 + unwrapped2_len;
 ///         ret res
 ///     );
 ///
@@ -48,7 +49,7 @@
 ///         SimpleBinder::bind(
 ///             wrapped1, &|unwrapped1| {
 ///                 SimpleBinder::bind(
-///                     wrapped2, &|unwrapped2| {
+///                     wrapped2, &|unwrapped2: &str| {
 ///                         let one = 1;
 ///                         SimpleBinder::ret(
 ///                             Incrementer::bind(

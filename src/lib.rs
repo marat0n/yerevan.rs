@@ -82,7 +82,7 @@
 //! ### Methods API
 //! - `let!`, `do!`
 //! ```ignore
-//! pub fn bind<T, U>(val: CEStruct<T>, f: &dyn Fn(T) -> CEStruct<U>) -> CEStruct<U>;
+//! pub fn bind<T, U>(val: CEStruct<T>, f: impl FnOnce(T) -> CEStruct<U>) -> CEStruct<U>;
 //! ```
 //! F# way:
 //! ```fsharp

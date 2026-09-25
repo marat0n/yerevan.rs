@@ -1,12 +1,12 @@
 #[cfg(test)]
 mod tests {
-    use std::{fmt::Display, i32};
+    use std::fmt::Display;
     use yerevan::yer;
 
     // Some simple user-defined structs for compuation expressions
     struct SimpleBinder {}
     impl SimpleBinder {
-        pub fn bind<T, U>(val: Option<T>, f: &dyn Fn(T) -> Option<U>) -> Option<U> {
+        pub fn bind<T, U>(val: Option<T>, f: impl FnOnce(T) -> Option<U>) -> Option<U> {
             match val {
                 Some(v) => f(v),
                 _ => SimpleBinder::zero(),
@@ -46,7 +46,7 @@ mod tests {
 
     struct Incrementer {}
     impl Incrementer {
-        pub fn bind(val: i32, f: &dyn Fn(i32) -> i32) -> i32 {
+        pub fn bind(val: i32, f: impl FnOnce(i32) -> i32) -> i32 {
             f(val + 1)
         }
         pub fn ret(val: i32) -> i32 {
